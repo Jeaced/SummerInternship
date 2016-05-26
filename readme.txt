@@ -1,6 +1,6 @@
 Do this stuff:
 
--1)Clone repo
+-1)Clone repo (Do NOT push to master. Create new braches and make pull requests)
 
 0)Launch postgres (Be sure it's running on port 5432)
 
