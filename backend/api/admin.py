@@ -34,8 +34,11 @@ class OrderAdmin(admin.ModelAdmin):
 		order_contents = obj.ordercontent_set.all()
 		items = list()
 		for oc in order_contents:
-			items.append((oc.item.title, oc.amount))	
-		return items
+			items.append((oc.item.title, oc.amount))
+		items_str = ''
+		for item in items:
+			items_str += (', ' + str(item[0]) + ": " + str(item[1]))		
+		return items_str[2:]
 
 	get_content.short_description = 'Items'		
 
