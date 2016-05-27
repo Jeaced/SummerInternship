@@ -65,6 +65,9 @@ class OrderContent(models.Model):
 	item = models.ForeignKey(Item, on_delete=models.CASCADE)
 	amount = models.IntegerField(blank=False)
 
+	class Meta:
+		unique_together=('order', 'item')
+
 class ItemHistory(models.Model):
 	date = models.DateField()
 	item = models.ForeignKey(Item, on_delete=models.CASCADE, unique_for_date="date")
