@@ -21,7 +21,7 @@ class CompositionAdmin(admin.ModelAdmin):
 	list_display = ('item', 'component', 'amount')
 	list_filter = ('item', 'component')
 	search_fields = ('item__title', 'component__title')
-	oredring = ['item.id']		
+	ordering = ['item.id']		
 
 class OrderAdmin(admin.ModelAdmin):
 	list_display = ('date', 'id', 'total_price', 'payment_method', 'user', 'get_content')
@@ -44,14 +44,14 @@ class ItemHistoryAdmin(admin.ModelAdmin):
 	search_fields = ('item__title',)
 	readonly_fields = ('date', 'item', 'amount')
 	date_hierarchy = 'date'
-	oredring = ['-date']	
+	ordering = ['-date']	
 
 class ComponentHistoryAdmin(admin.ModelAdmin):
 	list_display = ('date', 'component', 'amount')
 	search_fields = ('component__title',)
 	readonly_fields = ('date', 'component', 'amount')
 	date_hierarchy = 'date'
-	oredring = ['-date']
+	ordering = ['-date']
 
 admin.site.register(Item, ItemAdmin)
 admin.site.register(Component, ComponentAdmin)
