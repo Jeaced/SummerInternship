@@ -20,7 +20,7 @@ PAYMENT_CHOICES = (
 
 class Item(models.Model):
 	title = models.CharField(max_length=100, blank=False)
-	image_link = models.TextField(default='')
+	image_link = models.TextField(default='', blank=True)
 	created = models.DateField(auto_now_add=True)
 	units = models.CharField(max_length=2, choices=UNITS_CHOICES, default='pc')
 	price_per_unit = models.DecimalField(max_digits=12, decimal_places=2)
