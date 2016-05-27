@@ -17,4 +17,11 @@ class IsManagerOrReadOnly(permissions.BasePermission):
 class IsSuperuser(permissions.BasePermission):
 	def has_permission(self, request, view):
 		return (request.user and request.user.is_superuser)
+
+class IsSuperuserOrReadOnlyManager(permissions.BasePermission):
+	def has_permission(self, request, view):
+		return (
+			(request.user and request.user.is_superuser) or
+			(request.user and request.user.is_staff and request.method in SAFE_METHODS)
+			)		
 			
