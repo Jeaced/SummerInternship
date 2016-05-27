@@ -21,7 +21,7 @@ class CompositionAdmin(admin.ModelAdmin):
 	list_display = ('item', 'component', 'amount')
 	list_filter = ('item', 'component')
 	search_fields = ('item__title', 'component__title')
-	ordering = ['item.id']		
+	ordering = ['item__title', 'item__id']		
 
 class OrderAdmin(admin.ModelAdmin):
 	list_display = ('date', 'id', 'total_price', 'payment_method', 'user', 'get_content')
