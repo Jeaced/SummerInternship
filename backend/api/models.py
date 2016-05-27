@@ -57,6 +57,9 @@ class Order(models.Model):
 	class Meta:
 		ordering = ['-date']
 
+	def __str__(self):
+		return self.id	
+
 class OrderContent(models.Model):
 	order = models.ForeignKey(Order, on_delete=models.CASCADE)	
 	item = models.ForeignKey(Item, on_delete=models.CASCADE)
