@@ -58,7 +58,7 @@ class Order(models.Model):
 		ordering = ['-date']
 
 	def __str__(self):
-		return self.id	
+		return str(self.id)	
 
 class OrderContent(models.Model):
 	order = models.ForeignKey(Order, on_delete=models.CASCADE)	
