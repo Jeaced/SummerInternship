@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+import datetime
 
 # Create your models here.
 
@@ -49,8 +50,8 @@ class Composition(models.Model):
 	amount = models.IntegerField(blank=False)
 
 class Order(models.Model):
-	date = models.DateField()
-	total_price = models.DecimalField(max_digits=12, decimal_places=2)
+	date = models.DateField(default=datetime.date.today)
+	total_price = models.DecimalField(max_digits=12, decimal_places=2, default=0.0)
 	payment_method = models.CharField(max_length=6, choices=PAYMENT_CHOICES, default='cc')
 	user = models.ForeignKey(User, related_name='orders', on_delete=models.SET_NULL, null=True)
 
