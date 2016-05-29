@@ -54,6 +54,7 @@ class Order(models.Model):
 	total_price = models.DecimalField(max_digits=12, decimal_places=2, default=0.0)
 	payment_method = models.CharField(max_length=6, choices=PAYMENT_CHOICES, default='cc')
 	user = models.ForeignKey(User, related_name='orders', on_delete=models.SET_NULL, null=True)
+        items = models.ManyToManyField(Item, through='OrderContent')
 
 	class Meta:
 		ordering = ['-date']
