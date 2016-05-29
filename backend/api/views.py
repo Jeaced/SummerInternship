@@ -70,3 +70,34 @@ class ComponentList(APIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class ComponentDetail(APIView):
+    permission_classes = (IsManagerOrReadOnly,)
+
+    def get_object(self, pk):
+        try:
+            return Component.objects.get(pk=pk)
+        except Component.DoesNotExist:
+            raise Http404
+
+    def get(self, request, pk, format=None):
+        component = self.get_object(pk)
+        serializer = ComponentSerializer(component)
+
+        return Response(serializer.data)
+
+    def put(self, request, pk, format=None):
+        component = self.get_object(pk)
+        serializer = ComponentSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    def delete(self, request, pk, format=None):
+        component = self.get_object(pk)
+        component.delete()
+
+        return Response(status=status.HTTP_204_NO_CONTENT)
+

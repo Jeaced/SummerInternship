@@ -6,6 +6,7 @@ urlpatterns = [
 	url(r'^items/$', views.ItemList.as_view()),
 	url(r'^items/(?P<pk>[0-9]+)/$', views.ItemDetail.as_view()),
         url(r'^components/$', views.ComponentList.as_view()),
+        url(r'^components/(?P<pk>[0-9]+)/$', views.ComponentDetail.as_view())
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)
