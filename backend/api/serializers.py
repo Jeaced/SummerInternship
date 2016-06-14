@@ -1,6 +1,5 @@
 from rest_framework import serializers
-from api.models import Item
-from api.models import Component
+from api.models import Item, Component, Order
 
 class ItemSerializer(serializers.ModelSerializer):
     class Meta:
@@ -23,5 +22,8 @@ class ComponentSerializer(serializers.ModelSerializer):
                  'price_per_unit')
 
 
+class OrderSerializer(serializers.ModelSerializer):
+    items = ItemSerializer(many=True)
 
-                 
+    class Meta:
+        model = Order

@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Item, Component, Composition, Order, OrderContent, ItemHistory, ComponentHistory
+from .models import Item, Component, Composition, Order, ItemHistory, ComponentHistory
 
 # Register your models here.
 
@@ -31,10 +31,7 @@ class OrderAdmin(admin.ModelAdmin):
 	ordering = ['-id']
 
 	def get_content(self, obj):
-		order_contents = obj.ordercontent_set.all()
 		items = list()
-		for oc in order_contents:
-			items.append((oc.item.title, oc.amount))
 		items_str = ''
 		for item in items:
 			items_str += (', ' + str(item[0]) + ": " + str(item[1]))		

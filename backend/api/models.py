@@ -50,25 +50,19 @@ class Composition(models.Model):
 	amount = models.IntegerField(blank=False)
 
 class Order(models.Model):
-	date = models.DateField(default=datetime.date.today)
-	total_price = models.DecimalField(max_digits=12, decimal_places=2, default=0.0)
-	payment_method = models.CharField(max_length=6, choices=PAYMENT_CHOICES, default='cc')
-	user = models.ForeignKey(User, related_name='orders', on_delete=models.SET_NULL, null=True)
-        items = models.ManyToManyField(Item, through='OrderContent')
+    date = models.DateField(default=datetime.date.today)
+    total_price = models.DecimalField(max_digits=12, decimal_places=2, default=0.0)
+    payment_method = models.CharField(max_length=6, choices=PAYMENT_CHOICES, default='cc')
+    user = models.ForeignKey(User, related_name='orders', 
+                             on_delete=models.SET_NULL, 
+                             null=True)
+    items = models.ManyToManyField(Item)
 
-	class Meta:
-		ordering = ['-date']
+    class Meta:
+        ordering = ['-date']
 
-	def __str__(self):
-		return str(self.id)	
-
-class OrderContent(models.Model):
-	order = models.ForeignKey(Order, on_delete=models.CASCADE)	
-	item = models.ForeignKey(Item, on_delete=models.CASCADE)
-	amount = models.IntegerField(blank=False)
-
-	class Meta:
-		unique_together=('order', 'item')
+        def __str__(self):
+       	    return str(self.id)	
 
 class ItemHistory(models.Model):
 	date = models.DateField()
