@@ -1,1 +1,1 @@
-web: python hellodjango/manage.py runserver
+web: python backend/manage.py runserver
