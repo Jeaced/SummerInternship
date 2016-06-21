@@ -25,7 +25,7 @@ SECRET_KEY = '4lfv4^pr1n)=q7(6x(pymc&0jemapk^lzgivvg$^uv8n3s&(bk'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = [frozen-oasis-40205.herokuapp.com]
+ALLOWED_HOSTS = ['frozen-oasis-40205.herokuapp.com',]
 
 
 # Application definition
