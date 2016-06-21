@@ -1,0 +1,4 @@
+Django==1.9.7
+djangorestframework
+markdown
+django-filter
