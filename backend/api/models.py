@@ -56,13 +56,18 @@ class Order(models.Model):
     user = models.ForeignKey(User, related_name='orders', 
                              on_delete=models.SET_NULL, 
                              null=True)
-    items = models.ManyToManyField(Item)
+    items = models.ManyToManyField(Item, through='OrderComposition')
 
     class Meta:
         ordering = ['-date']
 
         def __str__(self):
        	    return str(self.id)	
+
+class OrderComposition(models.Model):
+    item = models.ForeignKey(Item, on_delete=models.CASCADE)
+    order = models.ForeignKey(Order, on_delete=models.CASCADE)
+    amount = models.IntegerField()
 
 class ItemHistory(models.Model):
 	date = models.DateField()

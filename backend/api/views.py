@@ -3,10 +3,11 @@ from rest_framework import status, permissions
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from api.permissions import IsManagerOrReadOnly, IsSuperuser
-from api.serializers import ItemSerializer, ComponentSerializer, OrderSerializer
-from api.models import Item, Component, Order
+from api.serializers import ItemSerializer, ComponentSerializer, OrderWithItemsSerializer
+from api.models import Item, Component, Order, OrderComposition
 from rest_framework import status, permissions
 from django.http import Http404
+from api.orders import OrderWithItems, ItemAmount
 
 # Create your views here.
 class ItemList(APIView):
@@ -106,15 +107,33 @@ class OrderList(APIView):
 
     def get(self, request, format=None):
         orders = Order.objects.all()
-        serializer = OrderSerializer(orders, many=True)
+        order_contents = OrderComposition.objects.all()
+        orders_with_items = list()
+        for order in orders:
+            contents = get_contents_by_id(order_contents, order.id)
+            item_amount = list()
+            for content in contents:
+                item_amount.append(orders.ItemAmount(content.item.id, content.amount))
+
+            orders_with_items.append(OrderWithItems(order, item_amount))
+            
+        serializer = OrderWithItemsSerializer(orders_with_items, many=True)
 
         return Response(serializer.data)
     
-    def post(self, request, format=None):
-        serializer = OrderSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
+    #def post(self, request, format=None):
+     #   serializer = OrderSerializer(data=request.data)
+      #  if serializer.is_valid():
+       #     serializer.save()
+       #     return Response(serializer.data, status=status.HTTP_201_CREATED)
         
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+       # return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+def get_contents_by_id(order_contents, id):
+    contents = list()
+    for order_content in order_contents:
+        if order_content.order == id:
+            contents.append(order_content)
+
+    return contents
 
