@@ -113,7 +113,7 @@ class OrderList(APIView):
             contents = get_contents_by_id(order_contents, order.id)
             item_amount = list()
             for content in contents:
-                item_amount.append(orders.ItemAmount(content.item.id, content.amount))
+                item_amount.append(ItemAmount(content.item_id.id, content.amount))
 
             orders_with_items.append(OrderWithItems(order, item_amount))
             
@@ -132,7 +132,7 @@ class OrderList(APIView):
 def get_contents_by_id(order_contents, id):
     contents = list()
     for order_content in order_contents:
-        if order_content.order == id:
+        if order_content.order_id.id == id:
             contents.append(order_content)
 
     return contents

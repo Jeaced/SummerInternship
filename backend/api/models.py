@@ -65,8 +65,8 @@ class Order(models.Model):
        	    return str(self.id)	
 
 class OrderComposition(models.Model):
-    item = models.ForeignKey(Item, on_delete=models.CASCADE)
-    order = models.ForeignKey(Order, on_delete=models.CASCADE)
+    item_id = models.ForeignKey(Item, on_delete=models.CASCADE)
+    order_id = models.ForeignKey(Order, on_delete=models.CASCADE)
     amount = models.IntegerField()
 
 class ItemHistory(models.Model):

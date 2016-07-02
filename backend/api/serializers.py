@@ -47,7 +47,7 @@ class OrderWithItemsSerializer(serializers.Serializer):
    total_price = serializers.DecimalField(max_digits=12, decimal_places=2)
    payment_method = serializers.CharField()
    user = serializers.CharField()
-   items = serializers.ListField(child=ItemAmountSerializer(many=True))
+   items = serializers.ListField(child=ItemAmountSerializer())
 
 
 
