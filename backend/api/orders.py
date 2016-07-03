@@ -4,7 +4,9 @@
 """
 Class which represents order with with items
 """
-class OrderWithItems():
+
+
+class Order():
 
     def __init__(self, order, items):
         """
@@ -19,9 +21,12 @@ class OrderWithItems():
         self.user = order.user
         self.items = items
 
+
 """
 Id amount pair class
 """
+
+
 class ItemAmount():
 
     def __init__(self, item_id, amount):
