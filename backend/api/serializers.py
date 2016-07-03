@@ -1,6 +1,7 @@
 from rest_framework import serializers
 
 from api.models import Item, Component, OrderDetail, OrderContent
+from api.orders import Order, get_order_detail, get_order_contents
 
 
 class ItemSerializer(serializers.ModelSerializer):
@@ -51,3 +52,19 @@ class OrderSerializer(serializers.Serializer):
     payment_method = serializers.CharField()
     user = serializers.IntegerField()
     items = serializers.ListField(child=ItemAmountSerializer())
+
+    def create(self, validated_data):
+        validated_data['order_id'] = validated_data.pop('id')
+        validated_data['user_id'] = validated_data.pop('user')
+        order = Order(**validated_data)
+
+        order_detail = get_order_detail(order)
+        order_detail.save()
+        order_contents = get_order_contents(order)
+        for order_content in order_contents:
+            order_content.save()
+
+        return order
+
+
+

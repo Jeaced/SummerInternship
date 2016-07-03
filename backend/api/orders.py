@@ -5,7 +5,7 @@ Basic idea is that Order class here represents endpoint of the api.
 It is serialized and deserialized to and from json,
 then transformed into corresponding database models.
 """
-from api.models import OrderDetail, OrderContent
+from api.models import OrderDetail, OrderContent, Item
 
 
 class Order(object):
@@ -42,8 +42,7 @@ def _get_order_from_order_detail(order_detail, items):
                  order_detail.total_price,
                  order_detail.payment_method,
                  user_id,
-                 items
-                 )
+                 items)
 
 
 def _get_contents_by_id(order_contents, id):
@@ -87,3 +86,34 @@ def get_orders():
         orders_with_items.append(_get_order_from_order_detail(order, items))
 
     return orders_with_items
+
+
+def get_order_detail(order):
+    """
+    :return: OrderDetail instance
+    """
+    return OrderDetail(order.id,
+                       order.date,
+                       order.total_price,
+                       order.payment_method,
+                       order.user)
+
+
+def _get_item_amount(dict):
+    return ItemAmount(dict['id'], dict['amount'])
+
+
+def get_order_contents(order):
+    """
+    :return: list of OrderContents for order
+    """
+    order_contents = list()
+    order_detail = OrderDetail.objects.get(pk=order.id)
+    for item in order.items:
+        item = _get_item_amount(item)
+        item_model = Item.objects.get(pk=item.id)
+        order_contents.append(OrderContent(item_id=item_model,
+                                           order_id=order_detail,
+                                           amount=item.amount))
+
+    return order_contents
