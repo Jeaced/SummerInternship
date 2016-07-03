@@ -44,10 +44,10 @@ class ItemAmountSerializer(serializers.Serializer):
     amount = serializers.IntegerField()
 
 
-class OrderWithItemsSerializer(serializers.Serializer):
+class OrderSerializer(serializers.Serializer):
     id = serializers.IntegerField()
     date = serializers.DateField()
     total_price = serializers.DecimalField(max_digits=12, decimal_places=2)
     payment_method = serializers.CharField()
-    user = serializers.CharField()
+    user = serializers.IntegerField()
     items = serializers.ListField(child=ItemAmountSerializer())

@@ -1,13 +1,11 @@
-from django.shortcuts import render
-from rest_framework import status, permissions
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from api.permissions import IsManagerOrReadOnly, IsSuperuser
-from api.serializers import ItemSerializer, ComponentSerializer, OrderWithItemsSerializer
+from api.permissions import IsManagerOrReadOnly
+from api.serializers import ItemSerializer, ComponentSerializer, OrderSerializer
 from api.models import Item, Component, OrderDetail, OrderContent
-from rest_framework import status, permissions
+from rest_framework import status
 from django.http import Http404
-from api.orders import Order, ItemAmount
+from api.orders import Order, ItemAmount, get_orders
 
 
 # Create your views here.
@@ -108,25 +106,18 @@ class ComponentDetail(APIView):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
+
+
 class OrderList(APIView):
 
     permission_classes = (IsManagerOrReadOnly,)
 
     def get(self, request, format=None):
-        orders = OrderDetail.objects.all()
-        order_contents = OrderContent.objects.all()
-        orders_with_items = list()
-        for order in orders:
-            contents = get_contents_by_id(order_contents, order.id)
-            item_amount = list()
-            for content in contents:
-                item_amount.append(ItemAmount(content.item_id.id, content.amount))
-
-            orders_with_items.append(Order(order, item_amount))
-
-        serializer = OrderWithItemsSerializer(orders_with_items, many=True)
+        serializer = OrderSerializer(get_orders(),
+                                     many=True)
 
         return Response(serializer.data)
+
 
         # def post(self, request, format=None):
         #   serializer = OrderSerializer(data=request.data)
@@ -137,10 +128,4 @@ class OrderList(APIView):
         # return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-def get_contents_by_id(order_contents, id):
-    contents = list()
-    for order_content in order_contents:
-        if order_content.order_id.id == id:
-            contents.append(order_content)
 
-    return contents
