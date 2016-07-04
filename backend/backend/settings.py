@@ -32,13 +32,13 @@ ALLOWED_HOSTS = ['frozen-oasis-40205.herokuapp.com',]
 
 INSTALLED_APPS = [
     'rest_framework',
-    'api',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'api'
 ]
 
 MIDDLEWARE_CLASSES = [

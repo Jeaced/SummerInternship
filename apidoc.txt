@@ -1,0 +1,79 @@
+Api operates using HTTP protocol. All communication is done via JSON.
+
+Api endpoints:
+
+items:
+
+    for 'units' field following is useddict:
+    UNITS_CHOICES = (
+        ('g', 'gramms'),
+        ('mg', 'milligramms'),
+        ('kg', 'kilogramms'),
+        ('pc', 'pieces'),
+        ('l', 'liter'),
+        ('ml', 'milliliter')
+    )
+    
+    
+    /items - GET: show list of all items
+             POST: add new item
+
+    format:
+    [
+        {
+            "id": 1,
+            "title": "borsch",
+            "image_link": "/path/to/image/",
+            "created": "2016-07-03",
+            "units": "pc",
+            "price_per_unit": "100.00" - two numbers after dot.
+        }
+    ]
+
+    /items/<item_id> - GET:show item with id as item_id
+                       PUT:update item info
+                       DELETE: delete an item
+    format is the same as above
+
+
+components
+    
+    /components - GET: show list of all components
+                  POST: add new component
+    format:
+    [
+        {
+            "id": 1,
+            "title": "pomidor",
+            "created": "2016-07-03",
+            "units": "kg",
+            "price_per_unit": "300.00"
+        }
+    ]
+    
+    /components/<component_id> - GET: show component with provided id
+                                 PUT: update component
+                                 DELETE: delete component
+
+
+orders
+    
+    /orders - GET: list of all orders
+              POST: add order
+
+    format:
+    [
+        {
+            "id": 2,
+            "date": "2016-07-03",
+            "total_price": "0.00",
+            "payment_method": "cc",
+            "user": 1, - id of a user who created order
+            "items": [
+                {
+                    "id": 1, - id of item
+                    "amount": 200
+                }
+            ]
+        } 
+    ]
