@@ -24,21 +24,6 @@ class ComponentSerializer(serializers.ModelSerializer):
                  'units',
                  'price_per_unit')
 
-    # class OrderCompositionSerializer(serializers.HyperlinkedModelSerializer):
-    #   item_id = serializers.ReadOnlyField(Item.pk)
-    #  amount = serializers.IntegerField()
-    #
-    #   class Meta:
-    #      model = OrderComposition
-    #     fields = ('item', 'amount',)
-
-    # class OrderSerializer(serializers.ModelSerializer):
-    #   items = OrderCompositionSerializer(source='ordercomposition_set', many=True)
-    #
-    #   class Meta:
-    #      model = OrderDetail
-    #     fields = ('id', 'date', 'total_price', 'payment_method', 'user', 'items')
-
 
 class ItemAmountSerializer(serializers.Serializer):
     id = serializers.IntegerField()
