@@ -57,7 +57,7 @@ Transition between serializer and db is made in orders.py file
 
 
 class OrderDetail(models.Model):
-    date = models.DateField(default=datetime.date.today)
+    date = models.DateTimeField(default=datetime.date.today)
     total_price = models.DecimalField(max_digits=12, decimal_places=2, default=0.0)
     payment_method = models.CharField(max_length=6, choices=PAYMENT_CHOICES, default='cc')
     user = models.ForeignKey(User, related_name='orders',

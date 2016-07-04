@@ -47,7 +47,7 @@ class ItemAmountSerializer(serializers.Serializer):
 
 class OrderSerializer(serializers.Serializer):
     id = serializers.IntegerField()
-    date = serializers.DateField()
+    date = serializers.DateTimeField()
     total_price = serializers.DecimalField(max_digits=12, decimal_places=2)
     payment_method = serializers.CharField()
     user = serializers.IntegerField()
