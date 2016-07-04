@@ -88,6 +88,17 @@ def get_orders():
     return orders_with_items
 
 
+def get_order(id):
+    try:
+        order_detail = OrderDetail.objects.get(pk=id)
+        order_contents = OrderContent.objects.filter(order_id=id)
+    except (OrderDetail.DoesNotExist, OrderContent.DoesNotExist):
+        raise Exception
+
+    items = _get_order_items(list(order_contents), int(id))
+    return _get_order_from_order_detail(order_detail, items)
+
+
 def get_order_detail(order):
     """
     :return: OrderDetail instance
@@ -117,3 +128,9 @@ def get_order_contents(order):
                                            amount=item.amount))
 
     return order_contents
+
+
+def delete_order(order):
+    order_detail = OrderDetail.objects.get(pk=order.id)
+    OrderContent.objects.filter(order_id=order_detail).delete()
+    order_detail.delete()
