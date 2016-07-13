@@ -2,10 +2,11 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from api.permissions import IsManagerOrReadOnly
 from api.serializers import ItemSerializer, ComponentSerializer, OrderSerializer
-from api.models import Item, Component
+from api.models import Item, Component, ItemHistory, ComponentHistory
 from rest_framework import status
 from django.http import Http404
 from api.orders import Order, ItemAmount, get_orders, get_order, delete_order
+from django.db.models import F
 
 
 # Create your views here.
@@ -120,6 +121,16 @@ class OrderList(APIView):
         serializer = OrderSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
+            date = serializer.validated_data.get("date")
+            order_items = serializer.validated_data.get("items")
+            for i in order_items:
+                item = Item.objects.get(pk=i.get("id"))
+                if ItemHistory.objects.filter(date=date, item=item).exists():
+                    item_sold = ItemHistory.objects.get(date=date, item=item)
+                    item_sold.amount = F('amount') + i.get("amount")
+                    item_sold.save()
+                else:
+                    item_sold = ItemHistory.objects.create(date=date, item=item, amount=i.get("amount"))
             return Response(serializer.data, status=status.HTTP_201_CREATED)
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
