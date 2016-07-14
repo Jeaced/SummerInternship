@@ -46,6 +46,11 @@ class Component(models.Model):
     def __str__(self):
         return self.title
 
+class Composition(models.Model):
+    item = models.ForeignKey(Item, on_delete=models.CASCADE)    
+    component = models.ForeignKey(Component, on_delete=models.CASCADE)
+    amount = models.IntegerField(blank=False)        
+
 
 """
 Order entity is handled via 2 models:

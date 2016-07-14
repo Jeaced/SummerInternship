@@ -62,6 +62,7 @@ class ComponentHistoryAdmin(admin.ModelAdmin):
 
 admin.site.register(Item, ItemAdmin)
 admin.site.register(Component, ComponentAdmin)
+admin.site.register(Composition, CompositionAdmin)
 admin.site.register(OrderDetail, OrderAdmin)
 admin.site.register(ItemHistory, ItemHistoryAdmin)
 admin.site.register(ComponentHistory, ComponentHistoryAdmin)

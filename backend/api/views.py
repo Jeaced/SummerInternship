@@ -2,7 +2,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from api.permissions import IsManagerOrReadOnly
 from api.serializers import ItemSerializer, ComponentSerializer, OrderSerializer
-from api.models import Item, Component, ItemHistory, ComponentHistory
+from api.models import Item, Component, ItemHistory, ComponentHistory, Composition
 from rest_framework import status
 from django.http import Http404
 from api.orders import Order, ItemAmount, get_orders, get_order, delete_order
@@ -131,6 +131,18 @@ class OrderList(APIView):
                     item_sold.save()
                 else:
                     item_sold = ItemHistory.objects.create(date=date, item=item, amount=i.get("amount"))
+                if Composition.objects.filter(item=item).exists():
+                    item_components = list()
+                    queryset = Composition.objects.filter(item=item)
+                    for entry in queryset:
+                        item_components.append((entry.component, entry.amount),)
+                    for component in item_components:
+                        if ComponentHistory.objects.filter(date=date, component=component[0]).exists():
+                            component_spent = ComponentHistory.objects.get(date=date, component=component[0])
+                            component_spent.amount = F('amount') + (component[1] * i.get("amount"))
+                            component_spent.save()
+                        else:
+                            component_spent = ComponentHistory.objects.create(date=date, component=component[0], amount=(component[1]*i.get("amount")))
             return Response(serializer.data, status=status.HTTP_201_CREATED)
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -154,8 +166,3 @@ class OrderDetail(APIView):
         delete_order(order)
 
         return Response(status=status.HTTP_204_NO_CONTENT)
-
-
-
-
-
