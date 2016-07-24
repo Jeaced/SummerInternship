@@ -1,7 +1,7 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from api.permissions import IsManagerOrReadOnly
-from api.serializers import ItemSerializer, ComponentSerializer, OrderSerializer
+from api.serializers import ItemSerializer, ComponentSerializer, OrderSerializer, ItemHistorySerializer, ComponentHistorySerializer
 from api.models import Item, Component, ItemHistory, ComponentHistory, Composition
 from rest_framework import status
 from django.http import Http404
@@ -166,3 +166,21 @@ class OrderDetail(APIView):
         delete_order(order)
 
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+class ItemHistoryList(APIView):
+
+    permission_classes = (IsManagerOrReadOnly,)
+
+    def get(self, request, format=None):
+        items = ItemHistory.objects.all()
+        serializer = ItemHistorySerializer(items, many=True)
+        return Response(serializer.data)
+
+class ComponentHistoryList(APIView):
+
+    permission_classes = (IsManagerOrReadOnly,)
+
+    def get(self, request, format=None):
+        components = ComponentHistory.objects.all()
+        serializer = ComponentHistorySerializer(components, many=True)
+        return Response(serializer.data) 

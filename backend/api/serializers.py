@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from api.models import Item, Component, OrderDetail, OrderContent
+from api.models import Item, Component, OrderDetail, OrderContent, ItemHistory, ComponentHistory
 from api.orders import Order, get_order_detail, get_order_contents
 
 
@@ -24,6 +24,19 @@ class ComponentSerializer(serializers.ModelSerializer):
                  'units',
                  'price_per_unit')
 
+class ItemHistorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ItemHistory
+        field = ('date',
+                 'item',
+                 'amount')
+
+class ComponentHistorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ComponentHistory
+        field = ('date',
+                 'component',
+                 'amount')                          
 
 class ItemAmountSerializer(serializers.Serializer):
     id = serializers.IntegerField()
@@ -50,6 +63,3 @@ class OrderSerializer(serializers.Serializer):
             order_content.save()
 
         return order
-
-
-
